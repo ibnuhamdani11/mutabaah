@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Image, View, StatusBar } from "react-native";
 import {
   Container,
   Header,
@@ -14,10 +15,13 @@ import {
   Icon,
   Form,
   Text,
-  Center
+  Center,
+  Thumbnail
 } from "native-base";
-import styles from "./style";
+import styles from "./styles";
 import Home from "../home/";
+
+const logo = require("../../../assets/logo_ibnu_abbas.jpeg");
 
 class Login extends Component {
   render() {
@@ -38,6 +42,9 @@ class Login extends Component {
         </Header>
 
         <Content>
+          <View>
+            <Image source={logo} />
+          </View>
           <Form>
             <Item floatingLabel>
               <Label>Username</Label>

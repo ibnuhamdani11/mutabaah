@@ -13,6 +13,7 @@ import MenuSetorOrUjian from "./screens/menu_setor_or_ujian";
 import Setoran from "./screens/setoran";
 import Ujian from "./screens/ujian/";
 import ProgresSiswa from "./screens/progres_siswa/";
+import ListTry from "./screens/list_try";
 
 const Drawer = DrawerNavigator(
   {
@@ -38,7 +39,8 @@ const AppNavigator = StackNavigator(
     PilihJuzPart: { screen: PilihJuzPart },
     MenuSetorOrUjian: { screen: MenuSetorOrUjian },
     Setoran: { screen: Setoran },
-    Ujian: { screen: Ujian }
+    Ujian: { screen: Ujian },
+    ListTry: { screen: ListTry }
   },
   {
     initialRouteName: "Drawer",

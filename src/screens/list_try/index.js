@@ -12,28 +12,35 @@ import {
   Right,
   Body,
   Separator,
-  List
+  List,
+  View,
+  Fab
 } from "native-base";
 import styles from "./styles";
 
 const datas = [
   {
-    route: "Setoran",
-    text: "Setoran"
+    route: "MenuSetorOrUjian",
+    text: "Test1"
   },
   {
-    route: "Ujian",
-    text: "Ujian"
+    route: "MenuSetorOrUjian",
+    text: "Test1"
+  },
+  {
+    route: "MenuSetorOrUjian",
+    text: "Test1"
   }
 ];
 
-class MenuSetorOrUjian extends Component {
+class ListTry extends Component {
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam('title', 'Pilih Jenis'),
+  constructor(props) {
+    super(props);
+    this.state = {
+      active: false
     };
-  };
+  }
   
   render() {
     return (
@@ -45,12 +52,9 @@ class MenuSetorOrUjian extends Component {
             </Button>
           </Left>
           <Body>
-            
+            <Title>Daftar </Title>
           </Body>
           <Right>
-            <Button transparent>
-              <Icon name="search" />
-            </Button>
             <Button transparent>
               <Icon name="more" />
             </Button>
@@ -63,7 +67,9 @@ class MenuSetorOrUjian extends Component {
             renderRow={data =>
               <ListItem
                 button
-                onPress={() => this.props.navigation.navigate(data.route)}
+                onPress={() => this.props.navigation.navigate(data.route, {
+                  title: data.text
+                })}
               >
                 <Left>
                   <Text>
@@ -76,9 +82,23 @@ class MenuSetorOrUjian extends Component {
               </ListItem>}
           />
         </Content>
+
+        <View style={{ flex: 1 }}>
+          <Fab
+            active={this.state.active}
+            direction="up"
+            containerStyle={{ }}
+            style={{ backgroundColor: '#5067FF' }}
+            position="bottomRight"
+            onPress={() => this.props.navigation.navigate('MenuSetorOrUjian', {
+              title: 'Tambah'
+            })}>
+            <Icon name="add" />
+          </Fab>
+        </View>
       </Container>
     );
   }
 }
 
-export default MenuSetorOrUjian;
+export default ListTry;

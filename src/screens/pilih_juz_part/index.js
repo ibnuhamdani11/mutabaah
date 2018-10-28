@@ -18,33 +18,18 @@ import styles from "./styles";
 
 const datas = [
   {
-    route: "MenuSetorOrUjian",
-    text: "1/4 Pertama"
+    route: "ListTry",
+    text: "1/4 juz"
   },
   {
-    route: "MenuSetorOrUjian",
-    text: "1/4 Kedua"
+    route: "ListTry",
+    text: "1/2 juz"
   },
   {
-    route: "Ujian",
-    text: "1/2 Ujian Pertama"
-  },
-  {
-    route: "MenuSetorOrUjian",
-    text: "1/4 Ketiga"
-  },
-  {
-    route: "MenuSetorOrUjian",
-    text: "1/4 Keempat"
-  },
-  {
-    route: "Ujian",
-    text: "1/2 Ujian Kedua"
-  },
-  {
-    route: "Ujian",
-    text: "1 Juz"
+    route: "ListTry",
+    text: "1 juz"
   }
+
 ];
 
 class PilihJuzPart extends Component {
@@ -62,9 +47,6 @@ class PilihJuzPart extends Component {
             <Title>Pilih Tipe</Title>
           </Body>
           <Right>
-            <Button transparent>
-              <Icon name="search" />
-            </Button>
             <Button transparent>
               <Icon name="more" />
             </Button>

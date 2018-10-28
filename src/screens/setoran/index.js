@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Alert } from "react-native";
 import {
   Container,
   Header,
@@ -80,7 +81,9 @@ class Setoran extends Component {
               />
             </Item>
           </Form>
-          <Button block style={{ margin: 15, marginTop: 50 }}>
+          <Button block style={{ margin: 15, marginTop: 50 }} onPress={() => 
+              alert('You tapped the button!')
+            }>
             <Text>Simpan</Text>
           </Button>
         </Content>

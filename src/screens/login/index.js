@@ -20,6 +20,7 @@ import {
 } from "native-base";
 import styles from "./styles";
 import Home from "../home/";
+import axios from 'axios';
 
 const logo = require("../../../assets/logo_ibnu_abbas.jpeg");
 

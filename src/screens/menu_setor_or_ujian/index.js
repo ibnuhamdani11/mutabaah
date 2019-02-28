@@ -29,13 +29,51 @@ const datas = [
 
 class MenuSetorOrUjian extends Component {
 
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam('title', 'Pilih Jenis'),
-    };
-  };
+  constructor(props) {
+ 
+    super(props)
+    this.state = {
+      nameHeader: null,
+    }
+  }
+
+  componentDidMount(){
+    const { navigation } = this.props;
+    const juz = navigation.getParam('juz', 'No juz');
+    const tipeJuz = navigation.getParam('tipeJuz', 'No tipeJuz');
+    const status = navigation.getParam('status', 'No status');
+
+    // if (tipeJuz == '1 juz') {
+    //   var url = 'http://mutabaah-ibnuabbas-bsd.com/api/kelas';
+    // }else if(tipeJuz == '1/2 juz'){
+    //   var url = 'http://mutabaah-ibnuabbas-bsd.com/api/kelas';
+    // }else if(tipeJuz == '1/4 juz'){
+    //   var url = 'http://mutabaah-ibnuabbas-bsd.com/api/kelas';
+    // }
+    this.setState({
+      nameHeader  : status
+    })
+  }
+
+  pilihListSetor(params){
+    const { navigation } = this.props;
+    const juz = navigation.getParam('juz', 'No juz');
+    const tipeJuz = navigation.getParam('tipeJuz', 'No tipeJuz');
+    const status = navigation.getParam('status', 'No status');
+    const id_siswa = navigation.getParam('id_siswa', 'No id_siswa');
+
+    this.props.navigation.push('ListSetor', {
+      juz      : juz,
+      status   : status,
+      tipeJuz  : tipeJuz,
+      tipeRoute : params,
+      id_siswa  : id_siswa
+      })
+    
+  }
   
   render() {
+    const {nameHeader} = this.state;
     return (
       <Container style={styles.container}>
         <Header>
@@ -45,25 +83,20 @@ class MenuSetorOrUjian extends Component {
             </Button>
           </Left>
           <Body>
-            
+            <Title>{nameHeader}</Title>
           </Body>
           <Right>
-            <Button transparent>
-              <Icon name="search" />
-            </Button>
-            <Button transparent>
-              <Icon name="more" />
-            </Button>
           </Right>
         </Header>
 
         <Content>
+          <Text style={styles.headerName}>Pilih Setoran atau Ujian</Text>
           <List
             dataArray={datas}
             renderRow={data =>
               <ListItem
                 button
-                onPress={() => this.props.navigation.navigate(data.route)}
+                onPress={() => this.pilihListSetor(data.route)}
               >
                 <Left>
                   <Text>

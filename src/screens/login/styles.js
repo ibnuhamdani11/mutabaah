@@ -14,7 +14,9 @@ export default {
   logoContainer: {
     flex: 1,
     marginTop: deviceHeight / 8,
-    marginBottom: 30
+    marginBottom: 30,
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   logo: {
     position: "absolute",

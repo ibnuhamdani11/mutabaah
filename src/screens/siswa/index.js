@@ -17,56 +17,67 @@ import {
 import { Alert, ListView, View, ActivityIndicator, StatusBar } from 'react-native';
 import styles from "./styles";
 
-class Murajaah extends Component {
+class siswaPage extends Component {
 
     constructor(props) {
- 
-    super(props)
-    this.state = {
-      dataKelas: null,
-      isReady: false
-    }
+      super(props)
+      this.state = {
+        dataSiswa: null,
+        isReady: false,
+        statusHeader: null
+      }
  
   }
 
   componentDidMount(){
-    return fetch('http://mutabaah-ibnuabbas-bsd.com/api/kelas')
+    const { navigation } = this.props;
+    const id_kelas = navigation.getParam('id_kelas', 'NO-ID');
+    const status = navigation.getParam('status', 'No-status');
+    // console.log('status', status);
+    this.setState({statusHeader: status});
+    // console.log('testIng', id_kelas);
+
+    return fetch('http://mutabaah-ibnuabbas-bsd.com/api/siswa/wherekelas/id/'+id_kelas)
       .then((response) => response.json())
       .then((responseJson) => {
 
         this.setState({
-          dataKelas : responseJson.data,
+          dataSiswa : responseJson.data,
           isReady: true
         },)
-        // console.log('state', this.state.dataKelas)
+        // console.log('state', this.state.dataSiswa)
       })
       .catch((error) =>{
         console.error(error);
       });
   }
 
-  pilihSiswa(params){
-    this.props.navigation.push('siswaPage', {
-      id_kelas: params,
-      status: 'Murajaah'
+  pilihJuz(params){
+    const { navigation } = this.props;
+    const status = navigation.getParam('status', 'No-status');
+    // console.log('status', status);
+    // this.setState({statusHeader: status});
+    this.props.navigation.push('PilihJuz', {
+      id_siswa: params,
+      status: status
     })
   }
 
   renderSiswa = () => {
-    const { dataKelas } = this.state;
-    if (!dataKelas) {
+    const { dataSiswa } = this.state;
+    if (!dataSiswa) {
       return null;
     }
     else {
-      return dataKelas.map((item, i) => {
+      return dataSiswa.map((item, i) => {
         return (
           <ListItem key={i}
           button
-          onPress={() => this.pilihSiswa(item.kelas_id)}
+          onPress={() => this.pilihJuz(item.siswa_id)}
           >
             <Left>
               <Text key={i}>
-                {item.kelas_name}
+                {item.siswa_name}
               </Text>
             </Left>
             <Right>
@@ -80,6 +91,7 @@ class Murajaah extends Component {
 
   render() {
     const {isReady} = this.state;
+    const {statusHeader} = this.state;
 
     if (!isReady) {
       return ( 
@@ -94,19 +106,19 @@ class Murajaah extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
-              <Icon name="menu" />
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body>
-            <Title>Murajaah</Title>
+            <Title>{statusHeader}</Title>
           </Body>
           <Right>
             
           </Right>
         </Header>
         <Content>
-          <Text style={styles.headerName}>Pilih Kelas</Text>
+          <Text style={styles.headerName}>Pilih Santri</Text>
           { this.renderSiswa() }
         </Content>
       </Container>
@@ -114,4 +126,4 @@ class Murajaah extends Component {
   }
 }
 
-export default Murajaah;
+export default siswaPage;

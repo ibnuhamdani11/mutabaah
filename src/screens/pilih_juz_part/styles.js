@@ -11,5 +11,16 @@ export default {
   },
   direction: {
     padding: 10
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  headerName: {
+    fontSize : 20,
+    fontWeight : 'bold',
+    paddingTop : 10,
+    paddingLeft : 5
   }
 };

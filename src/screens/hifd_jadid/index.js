@@ -7,38 +7,89 @@ import {
   Button,
   Icon,
   ListItem,
+  List,
   Text,
   Left,
   Right,
   Body,
-  Separator,
-  List
+  Separator
 } from "native-base";
+import { Alert, ListView, View, ActivityIndicator, StatusBar } from 'react-native';
 import styles from "./styles";
-import PilihJuz from "../pilih_juz/";
-
-const datas = [
-  {
-    route: "PilihJuz",
-    text: "Firqriyatul Fajriyah"
-  },
-  {
-    route: "PilihJuz",
-    text: "Rizaf Kafabih"
-  },
-  {
-    route: "PilihJuz",
-    text: "Rizka Andini"
-  },
-  {
-    route: "PilihJuz",
-    text: "Sefri Ramdhani"
-  }
-];
 
 class HifdJadid extends Component {
-  
+
+    constructor(props) {
+ 
+      super(props)
+      this.state = {
+        dataKelas: null,
+        isReady: false
+      }
+ 
+  }
+
+  componentDidMount(){
+    return fetch('http://mutabaah-ibnuabbas-bsd.com/api/kelas')
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.setState({
+          dataKelas : responseJson.data,
+          isReady: true
+        },)
+        // console.log('state', this.state.dataKelas)
+      })
+      .catch((error) =>{
+        console.error(error);
+      });
+  }
+
+  pilihSiswa(params){
+    this.props.navigation.push('siswaPage', {
+      id_kelas: params,
+      status: 'Hifd Jadid'
+    })
+  }
+
+  renderSiswa = () => {
+    const { dataKelas } = this.state;
+    if (!dataKelas) {
+      return null;
+    }
+    else {
+      return dataKelas.map((item, i) => {
+        return (
+          <ListItem key={i}
+          button
+          onPress={() => this.pilihSiswa(item.kelas_id)}
+          >
+            <Left>
+              <Text key={i}>
+                {item.kelas_name}
+              </Text>
+            </Left>
+            <Right>
+              <Icon name="arrow-forward" />
+            </Right>
+          </ListItem>
+        )
+      })
+    }
+  }
+
   render() {
+    const {isReady} = this.state;
+
+    if (!isReady) {
+      return ( 
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator />
+          <StatusBar barStyle="default" />
+        </View>
+      );
+    }
+
     return (
       <Container style={styles.container}>
         <Header>
@@ -51,34 +102,11 @@ class HifdJadid extends Component {
             <Title>Hifd Jadid</Title>
           </Body>
           <Right>
-            <Button transparent>
-              <Icon name="search" />
-            </Button>
-            <Button transparent>
-              <Icon name="more" />
-            </Button>
           </Right>
         </Header>
-
         <Content>
-          <Text style={styles.direction}>Pilih siswa</Text>
-          <List
-            dataArray={datas}
-            renderRow={data =>
-              <ListItem
-                button
-                onPress={() => this.props.navigation.navigate(data.route)}
-              >
-                <Left>
-                  <Text>
-                    {data.text}
-                  </Text>
-                </Left>
-                <Right>
-                  <Icon name="arrow-forward" />
-                </Right>
-              </ListItem>}
-          />
+          <Text style={styles.headerName}>Pilih Kelas</Text>
+          { this.renderSiswa() }
         </Content>
       </Container>
     );

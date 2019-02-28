@@ -11,5 +11,11 @@ export default {
   },
   direction: {
     padding: 10
+  },
+  headerName: {
+    fontSize : 20,
+    fontWeight : 'bold',
+    paddingTop : 10,
+    paddingLeft : 5
   }
 };

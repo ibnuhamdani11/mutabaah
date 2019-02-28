@@ -17,56 +17,65 @@ import {
 import { Alert, ListView, View, ActivityIndicator, StatusBar } from 'react-native';
 import styles from "./styles";
 
-class Murajaah extends Component {
-
+class juzProgres extends Component {
     constructor(props) {
- 
-    super(props)
-    this.state = {
-      dataKelas: null,
-      isReady: false
-    }
+      super(props)
+      this.state = {
+        dataJuz: null,
+        isReady: false
+      }
  
   }
 
   componentDidMount(){
-    return fetch('http://mutabaah-ibnuabbas-bsd.com/api/kelas')
+    const { navigation } = this.props;
+    const id_siswa = navigation.getParam('id_siswa', 'NO-ID');
+
+    return fetch('http://mutabaah-ibnuabbas-bsd.com/api/hifd_jadid/juzSelanjutnya/id/'+id_siswa)
       .then((response) => response.json())
       .then((responseJson) => {
 
         this.setState({
-          dataKelas : responseJson.data,
+          dataJuz : responseJson.data,
           isReady: true
-        },)
-        // console.log('state', this.state.dataKelas)
+        })
       })
       .catch((error) =>{
         console.error(error);
       });
   }
 
-  pilihSiswa(params){
-    this.props.navigation.push('siswaPage', {
-      id_kelas: params,
-      status: 'Murajaah'
+  pilihJuzNext(params){
+    const { navigation } = this.props;
+    const id_siswa = navigation.getParam('id_siswa', 'NO-ID');
+    
+    this.props.navigation.push('juzDetail', {
+      id_siswa: id_siswa,
+      juz: params
     })
   }
 
-  renderSiswa = () => {
-    const { dataKelas } = this.state;
-    if (!dataKelas) {
+  renderJuz = () => {
+    const { dataJuz } = this.state;
+    var tmp = [];
+    // console.log('dataJuz', dataJuz);
+    for (let i = 1; i <= dataJuz.ujian_next; ++i) {
+      tmp.push({"juz" : i});
+    }
+    // console.log('tmp', tmp);
+    if (!tmp) {
       return null;
     }
     else {
-      return dataKelas.map((item, i) => {
+      return tmp.map((item, i) => {
         return (
           <ListItem key={i}
           button
-          onPress={() => this.pilihSiswa(item.kelas_id)}
+          onPress={() => this.pilihJuzNext(item.juz)}
           >
             <Left>
               <Text key={i}>
-                {item.kelas_name}
+                Juz {item.juz}
               </Text>
             </Left>
             <Right>
@@ -94,24 +103,23 @@ class Murajaah extends Component {
       <Container style={styles.container}>
         <Header>
           <Left>
-            <Button transparent onPress={() => this.props.navigation.openDrawer()}>
-              <Icon name="menu" />
+            <Button transparent onPress={() => this.props.navigation.goBack()}>
+              <Icon name="arrow-back" />
             </Button>
           </Left>
           <Body>
-            <Title>Murajaah</Title>
+            <Title>Progres Santri</Title>
           </Body>
           <Right>
             
           </Right>
         </Header>
         <Content>
-          <Text style={styles.headerName}>Pilih Kelas</Text>
-          { this.renderSiswa() }
+          { this.renderJuz() }
         </Content>
       </Container>
     );
   }
 }
 
-export default Murajaah;
+export default juzProgres;

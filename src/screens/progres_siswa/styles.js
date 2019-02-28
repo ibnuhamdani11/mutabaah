@@ -8,5 +8,16 @@ export default {
   },
   mb: {
     marginBottom: 15
-  }
+  },
+  headerName: {
+    fontSize : 20,
+    fontWeight : 'bold',
+    paddingTop : 10,
+    paddingLeft : 5
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 };

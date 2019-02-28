@@ -7,41 +7,117 @@ import {
   Button,
   Icon,
   ListItem,
+  List,
   Text,
   Left,
   Right,
   Body,
-  Separator,
-  List
+  Separator
 } from "native-base";
+import { Alert, ListView, View, ActivityIndicator, StatusBar } from 'react-native';
 import styles from "./styles";
 
-const datas = [
-  {
-    route: "PilihJuzPart",
-    text: "Juz 1"
-  },
-  {
-    route: "PilihJuzPart",
-    text: "Juz 2"
-  },
-  {
-    route: "PilihJuzPart",
-    text: "Juz 3"
-  },
-  {
-    route: "PilihJuzPart",
-    text: "Juz 4"
-  },
-  {
-    route: "PilihJuzPart",
-    text: "Juz 5"
-  }
-];
-
 class PilihJuz extends Component {
-  
+
+    constructor(props) {
+    super(props)
+    this.state = {
+      dataJuz: null,
+      isReady: false,
+      statusHeader: null
+    }
+ 
+  }
+
+  componentDidMount(){
+    const { navigation } = this.props;
+    const id_siswa = navigation.getParam('id_siswa', 'NO-ID');
+    const status = navigation.getParam('status', 'No status');
+    
+    if (status == "Murajaah") {
+      var url = 'http://mutabaah-ibnuabbas-bsd.com/api/murajaah/juzSelanjutnya/id/'+id_siswa;
+    }else if (status == "Hifd Jadid") {
+      var url = 'http://mutabaah-ibnuabbas-bsd.com/api/hifd_jadid/juzSelanjutnya/id/'+id_siswa;
+    }
+    // console.log('url', url);
+    return fetch(url)
+      .then((response) => response.json())
+      .then((responseJson) => {
+
+        this.setState({
+          dataJuz : responseJson.data,
+          isReady: true,
+          statusHeader : status
+        },)
+      })
+      .catch((error) =>{
+        console.error(error);
+    });
+  }
+
+  pilihJuzNext(params){
+    const { navigation } = this.props;
+    const status = navigation.getParam('status', 'No status');
+    const id_siswa = navigation.getParam('id_siswa', 'NO-ID');
+    if (status == 'Hifd Jadid') {
+      this.props.navigation.push('PilihJuzPart', {
+      juz: params,
+      id_siswa  : id_siswa
+    })
+    }else{
+      this.props.navigation.push('PilihJuzPartUlang', {
+      juz: params,
+      id_siswa  : id_siswa
+    })
+    }
+    
+  }
+
+  renderJuz = () => {
+    const { dataJuz } = this.state;
+    var tmp = [];
+    // console.log('dataJuz', dataJuz);
+    for (let i = 1; i <= dataJuz.ujian_next; ++i) {
+      tmp.push({"juz" : i});
+    }
+    // console.log('tmp', tmp);
+    if (!tmp) {
+      return null;
+    }
+    else {
+      return tmp.map((item, i) => {
+        return (
+          <ListItem key={i}
+          button
+          onPress={() => this.pilihJuzNext(item.juz)}
+          >
+            <Left>
+              <Text key={i}>
+                Juz {item.juz}
+              </Text>
+            </Left>
+            <Right>
+              <Icon name="arrow-forward" />
+            </Right>
+          </ListItem>
+        )
+      })
+    }
+  }
+
   render() {
+    const {isReady} = this.state;
+    const {statusHeader} = this.state;
+
+    if (!isReady) {
+      return ( 
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator />
+          <StatusBar barStyle="default" />
+        </View>
+      );
+    }
+
     return (
       <Container style={styles.container}>
         <Header>
@@ -51,36 +127,15 @@ class PilihJuz extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Pilih Juz</Title>
+            <Title>{statusHeader}</Title>
           </Body>
           <Right>
-            <Button transparent>
-              <Icon name="search" />
-            </Button>
-            <Button transparent>
-              <Icon name="more" />
-            </Button>
+            
           </Right>
         </Header>
-
         <Content>
-          <List
-            dataArray={datas}
-            renderRow={data =>
-              <ListItem
-                button
-                onPress={() => this.props.navigation.navigate(data.route)}
-              >
-                <Left>
-                  <Text>
-                    {data.text}
-                  </Text>
-                </Left>
-                <Right>
-                  <Icon name="arrow-forward" />
-                </Right>
-              </ListItem>}
-          />
+          <Text style={styles.headerName}>Pilih Juz</Text>
+          { this.renderJuz() }
         </Content>
       </Container>
     );

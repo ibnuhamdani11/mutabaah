@@ -1,97 +1,100 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
+import {  ImageBackground, Image, View, StatusBar, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import {
   Container,
   Header,
-  Title,
+  Title, 
   Content,
   Button,
   Icon,
   ListItem,
-  Text,
   Left,
+  Text,
   Right,
   Body,
   Separator,
   List
 } from "native-base";
+import { Grid, Row, Col } from "react-native-easy-grid";
 import styles from "./styles";
-import PilihJuz from "../pilih_juz/";
-
-const datas = [
-  {
-    name: "Beranda",
-    route: "Home",
-    icon: "home",
-    bg: "#C5F442"
-  },
-  {
-    name: "Hifd Jadid",
-    route: "HifdJadid",
-    icon: "paper",
-    bg: "#48525D"
-  },
-  {
-    name: "Murajaah",
-    route: "Murajaah",
-    icon: "paper",
-    bg: "#48525D"
-  },
-  {
-    name: "Progres Siswa",
-    route: "ProgresSiswa",
-    icon: "person",
-    bg: "#C5F442"
-  }
-];
+// import Profile from "../profile/";
+const backgroundImage = require("../../../assets/Main-menu.png");
+const iconHafalan = require("../../../assets/hafalan.png");
+const iconProgressSiswa = require("../../../assets/progress_siswa.png");
+const iconLogout = require("../../../assets/logout.png");
 
 class Home extends Component {
-  
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
-      <Container style={styles.container}>
-        <Header>
+      /*<Container style={styles.container}>*/
+
+      <ImageBackground source={backgroundImage} style={{width: '100%', height: '100%'}}>
+        <Header androidStatusBarColor='white'>
           <Left>
             <Button transparent onPress={() => this.props.navigation.openDrawer()}>
               <Icon name="menu" />
             </Button>
           </Left>
           <Body>
-            <Title>Home</Title>
+            <Title>Menu</Title>
           </Body>
-          <Right>
-            <Button transparent>
-              <Icon name="search" />
-            </Button>
-            <Button transparent>
-              <Icon name="more" />
-            </Button>
-          </Right>
+          <Right/>
         </Header>
 
-
-        <Content>
-        {
-          /* <Text style={styles.direction}>Pilih menu</Text>
-          <List
-            dataArray={datas}
-            renderRow={data =>
-              <ListItem
-                button
-                onPress={() => this.props.navigation.navigate(data.route)}
-              >
-                <Left>
-                  <Text>
-                    {data.name}
-                  </Text>
-                </Left>
-                <Right>
-                  <Icon name="arrow-forward" />
-                </Right>
-              </ListItem>}
-          /> */
-        }
-        </Content>
-      </Container>
+        <Grid >
+          <Row>
+            <Col>
+                <View style={ styles.bottomItem }>
+                  <View style={ styles.bottomItemIner }>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('HifdJadid')}>
+                      <Image source={iconHafalan} style={styles.iconImage}
+                      ></Image>
+                      <Text style={ styles.textIcon }> Hifd Jadid </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            </Col>
+            <Col>
+                <View style={ styles.bottomItem }>
+                  <View style={ styles.bottomItemIner }>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Murajaah')}>
+                      <Image source={iconHafalan} style={styles.iconImage}></Image>
+                      <Text style={ styles.textIcon }> Murajaah </Text>
+                      </TouchableOpacity>
+                  </View>
+                </View>
+            </Col>
+          </Row>
+          
+          <Row>
+            <Col>
+                <View style={ styles.bottomItem }>
+                  <View style={ styles.bottomItemIner }>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('ProgresSiswa')}>
+                      <Image source={iconProgressSiswa} style={styles.iconImage}></Image>
+                      <Text style={ styles.textIcon }> Progress </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            </Col>
+            <Col>
+                <View style={ styles.bottomItem }>
+                  <View style={ styles.bottomItemIner }>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+                      <Image source={iconLogout} style={styles.iconImage}></Image>
+                      <Text style={ styles.textIcon }> Logout </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+            </Col>
+          </Row>
+        </Grid>
+          
+        </ImageBackground>
     );
   }
 }

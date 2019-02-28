@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, View, StatusBar, Alert, AsyncStorage } from "react-native";
+import { ImageBackground, Image, View, StatusBar, Alert, AsyncStorage } from "react-native";
 // import Toast, {ToastAndroid} from 'react-native-simple-toast';
 import {
   Container,
@@ -27,6 +27,7 @@ import axios from "axios";
 import { StackNavigator } from 'react-navigation';
 
 const logo = require("../../../assets/logo_ibnu_abbas.png");
+const backgroundImage = require('../../../assets/background-login.png');
 
 class Login extends Component {
 
@@ -38,9 +39,7 @@ class Login extends Component {
  
       UserEmail: '',
       UserPassword: ''
- 
     }
- 
   }
 
   UserLoginFunction = () =>{
@@ -49,7 +48,7 @@ class Login extends Component {
    const { UserPassword }  = this.state ;
    
    
-    fetch('http://xposi.co.id/apical/panel/adm/login/react_login', {
+    fetch('http://mutabaah-ibnuabbas-bsd.com/api/user_login/cekLogin', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -57,9 +56,9 @@ class Login extends Component {
       },
       body: JSON.stringify({
      
-        Username: UserEmail,
+        email: UserEmail,
      
-        Password: UserPassword
+        password: UserPassword
      
       })
  
@@ -67,73 +66,64 @@ class Login extends Component {
           .then((responseJson) => {
 
               // If server response message same as Data Matched
-             if(responseJson == 'Success')
+             if(responseJson.status == 'success')
               {
                 
-                // AsyncStorage.setItem('TASKS', 'isinya adalah');
-                var aa = AsyncStorage.getItem('TASKS');
+                AsyncStorage.setItem('user_name', responseJson.data.user_name);
+                AsyncStorage.setItem('user_id', responseJson.data.user_id);
+                var aa = AsyncStorage.getItem('user_name');
                     aa.then((result)=>{
                       console.log("test", result);
                     })
-                
+                console.log("test", responseJson.data.user_id);
                   //Then open Profile activity and send user email to profile activity.
+                  Alert.alert("Selamat Datang");
                   this.props.navigation.navigate('Home')
               }
               else{
 
-                Alert.alert("Username dan Password Salah, Cek Kembali");
+                Alert.alert("Username dan Password Salah,");
                 //Toast.show("Username dan Password Salah, Cek Kembali");
                 
               }
 
           }).catch((error) => {
-            console.error(error);
+            /*console.error(error);*/
+            Alert.alert("Cek Kembali Koneksi Internet Anda");
           });
-  
-  /*if (UserEmail == 'admin') {
-    this.props.navigation.navigate('Home')
-  }*/
+
   }
 
   render() {
     return (
-      <Container style={styles.container}>
-        <Header>
-          {/*
-            <Left>
-            <Button transparent onPress={() => this.props.navigation.goBack()}>
-              <Icon name="arrow-back" />
-            </Button>
-          </Left>
-        */}
-          <Body>
-            <Title>Login</Title>
-          </Body>
-          {/*<Center />*/}
-        </Header>
-
+      <ImageBackground source={backgroundImage} style={{width: '100%', height: '100%'}}>
         <Content>
-          <View>
+          <View style={styles.logoContainer}>
             <Image source={logo} />
           </View>
           <Form>
             <Item floatingLabel>
-              <Label>Username</Label>
+              <Label>Email</Label>
               <Input 
-              onChangeText={UserEmail => this.setState({UserEmail})}/>
+              onChangeText={UserEmail => this.setState({UserEmail})}
+              keyboardType="email-address"
+              returnKeyType = "next"
+              autoCorrect = {false}/>
             </Item>
             <Item floatingLabel last>
               <Label>Password</Label>
               <Input 
               secureTextEntry 
-              onChangeText={UserPassword => this.setState({UserPassword})} />
+              onChangeText={UserPassword => this.setState({UserPassword})} 
+              returnKeyType = "go"
+              autoCorrect = {false}/>
             </Item>
           </Form>
           <Button block style={{ margin: 15, marginTop: 50 }} onPress={this.UserLoginFunction}>
             <Text>Sign In</Text>
           </Button>
         </Content>
-      </Container>
+      </ImageBackground>
     );
   }
 }

@@ -18,28 +18,18 @@ import styles from "./styles";
 
 const datas = [
   {
-    route: "ListSetor",
-    text: "1/4 juz"
-  },
-  {
-    route: "ListSetor",
+    route: "ListTry",
     text: "1/2 juz"
   },
   {
-    route: "ListSetor",
+    route: "ListTry",
     text: "1 juz"
   }
 
 ];
 
-class PilihJuzPart extends Component {
-
-  // componentDidMount(){
-  //   const { navigation } = this.props;
-  //   const juz = navigation.getParam('juz', 'No juz');
-  //   console.log('juz', juz);
-  // }
-
+class PilihJuzPartUlang extends Component {
+  
   pilihSetorOrUjian(params){
     const { navigation } = this.props;
     const juz = navigation.getParam('juz', 'No juz');
@@ -47,28 +37,27 @@ class PilihJuzPart extends Component {
     if (params == '1 juz') {
       this.props.navigation.push('MenuSetorOrUjian', {
       juz      : juz,
-      status   : 'Hifd Jadid',
+      status   : 'Murajaah',
       tipeJuz  : params,
       id_siswa : id_siswa
     })
     }else if(params == '1/2 juz'){
       this.props.navigation.push('MenuSetorOrUjian', {
       juz      : juz,
-      status   : 'Hifd Jadid',
+      status   : 'Murajaah',
       tipeJuz  : params,
       id_siswa : id_siswa
     })
     }else if(params == '1/4 juz'){
       this.props.navigation.push('MenuSetorOrUjian', {
       juz      : juz,
-      status   : 'Hifd Jadid',
+      status   : 'Murajaah',
       tipeJuz  : params,
       id_siswa : id_siswa
       })
     }
     
   }
-  
   render() {
     return (
       <Container style={styles.container}>
@@ -79,7 +68,7 @@ class PilihJuzPart extends Component {
             </Button>
           </Left>
           <Body>
-            <Title>Hifd Jadid</Title>
+            <Title>Murajaah</Title>
           </Body>
           <Right>
             
@@ -111,4 +100,4 @@ class PilihJuzPart extends Component {
   }
 }
 
-export default PilihJuzPart;
+export default PilihJuzPartUlang;
